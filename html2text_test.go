@@ -648,6 +648,42 @@ func TestBold(t *testing.T) {
 
 }
 
+func TestBoldOmittedEmphasis(t *testing.T) {
+	testCases := []struct {
+		input  string
+		output string
+	}{
+		{
+			"<b>Test</b>",
+			"Test",
+		},
+		{
+			"\t<b>Test</b> ",
+			"Test",
+		},
+		{
+			"\t<b>Test line 1<br>Test 2</b> ",
+			"Test line 1\nTest 2",
+		},
+		{
+			"<b>Test</b> <b>Test</b>",
+			"Test Test",
+		},
+	}
+
+	for _, testCase := range testCases {
+		options := Options{
+			OmitBoldEmphasis: true,
+		}
+		if msg, err := wantString(testCase.input, testCase.output, options); err != nil {
+			t.Error(err)
+		} else if len(msg) > 0 {
+			t.Log(msg)
+		}
+	}
+
+}
+
 func TestDiv(t *testing.T) {
 	testCases := []struct {
 		input  string

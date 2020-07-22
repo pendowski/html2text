@@ -18,6 +18,7 @@ type Options struct {
 	PrettyTables        bool                 // Turns on pretty ASCII rendering for table elements.
 	PrettyTablesOptions *PrettyTablesOptions // Configures pretty ASCII rendering for table elements.
 	OmitLinks           bool                 // Turns on omitting links
+	OmitBoldEmphasis    bool                 // Turns on skipping adding * around bold and strong elements.
 }
 
 // PrettyTablesOptions overrides tablewriter behaviors
@@ -224,6 +225,10 @@ func (ctx *textifyTraverseContext) handleElement(node *html.Node) error {
 		return ctx.emit("\n")
 
 	case atom.B, atom.Strong:
+		if ctx.options.OmitBoldEmphasis {
+			return ctx.traverseChildren(node)
+		}
+
 		subCtx := textifyTraverseContext{}
 		subCtx.endsWithSpace = true
 		if err := subCtx.traverseChildren(node); err != nil {
