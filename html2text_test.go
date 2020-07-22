@@ -521,6 +521,26 @@ func TestOmitLinks(t *testing.T) {
 	}
 }
 
+func TestOmitImgAlt(t *testing.T) {
+	testCases := []struct {
+		input  string
+		output string
+	}{
+		{
+			`<a href="http://example.com/"><img src="http://example.ru/hello.jpg" alt="Example"></a>`,
+			``,
+		},
+	}
+
+	for _, testCase := range testCases {
+		if msg, err := wantString(testCase.input, testCase.output, Options{OmitLinks: true, OmitImgAlt: true}); err != nil {
+			t.Error(err)
+		} else if len(msg) > 0 {
+			t.Log(msg)
+		}
+	}
+}
+
 func TestImageAltTags(t *testing.T) {
 	testCases := []struct {
 		input  string

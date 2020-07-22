@@ -19,6 +19,7 @@ type Options struct {
 	PrettyTablesOptions *PrettyTablesOptions // Configures pretty ASCII rendering for table elements.
 	OmitLinks           bool                 // Turns on omitting links
 	OmitBoldEmphasis    bool                 // Turns on skipping adding * around bold and strong elements.
+	OmitImgAlt          bool                 // Turns on omitting img alt text.
 }
 
 // PrettyTablesOptions overrides tablewriter behaviors
@@ -245,7 +246,7 @@ func (ctx *textifyTraverseContext) handleElement(node *html.Node) error {
 		}
 
 		// If image is the only child, take its alt text as the link text.
-		if img := node.FirstChild; img != nil && node.LastChild == img && img.DataAtom == atom.Img {
+		if img := node.FirstChild; !ctx.options.OmitImgAlt && img != nil && node.LastChild == img && img.DataAtom == atom.Img {
 			if altText := getAttrVal(img, "alt"); altText != "" {
 				if err := ctx.emit(altText); err != nil {
 					return err
