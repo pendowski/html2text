@@ -597,31 +597,31 @@ func TestHeadings(t *testing.T) {
 	}{
 		{
 			"<h1>Test</h1>",
-			"****\nTest\n****",
+			"---\nTest\n---",
 		},
 		{
 			"\t<h1>\nTest</h1> ",
-			"****\nTest\n****",
+			"---\nTest\n---",
 		},
 		{
 			"\t<h1>\nTest line 1<br>Test 2</h1> ",
-			"***********\nTest line 1\nTest 2\n***********",
+			"---\nTest line 1\nTest 2\n---",
 		},
 		{
 			"<h1>Test</h1> <h1>Test</h1>",
-			"****\nTest\n****\n\n****\nTest\n****",
+			"---\nTest\n---\n\n---\nTest\n---",
 		},
 		{
 			"<h2>Test</h2>",
-			"----\nTest\n----",
+			"---\nTest\n---",
 		},
 		{
 			"<h1><a href='http://example.com/'>Test</a></h1>",
-			"****************************\nTest ( http://example.com/ )\n****************************",
+			"---\nTest ( http://example.com/ )\n---",
 		},
 		{
 			"<h3> <span class='a'>Test </span></h3>",
-			"Test\n----",
+			"---\nTest\n---",
 		},
 	}
 
@@ -1065,9 +1065,9 @@ func Example() {
 	// Output:
 	// Mega Service ( http://jaytaylor.com/ )
 	//
-	// ******************************************
+	// ---
 	// Welcome to your new account on my service!
-	// ******************************************
+	// ---
 	//
 	// Here is some more information:
 	//

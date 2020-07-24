@@ -159,22 +159,8 @@ func (ctx *textifyTraverseContext) handleElement(node *html.Node) error {
 		}
 
 		str := subCtx.buf.String()
-		dividerLen := 0
-		for _, line := range strings.Split(str, "\n") {
-			if lineLen := len([]rune(line)); lineLen-1 > dividerLen {
-				dividerLen = lineLen - 1
-			}
-		}
-		var divider string
-		if node.DataAtom == atom.H1 {
-			divider = strings.Repeat("*", dividerLen)
-		} else {
-			divider = strings.Repeat("-", dividerLen)
-		}
+		divider := "---"
 
-		if node.DataAtom == atom.H3 {
-			return ctx.emit("\n\n" + str + "\n" + divider + "\n\n")
-		}
 		return ctx.emit("\n\n" + divider + "\n" + str + "\n" + divider + "\n\n")
 
 	case atom.Blockquote:
