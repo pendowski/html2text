@@ -1,4 +1,4 @@
-module github.com/fastred/html2text
+module github.com/410Labs/html2text
 
 go 1.12
 
