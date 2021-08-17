@@ -937,6 +937,60 @@ func TestPeriod(t *testing.T) {
 	}
 }
 
+func TestStyling(t *testing.T) {
+	prefix := "!"
+	suffix := "^"
+	empty := ""
+
+	testCases := []struct {
+		input   string
+		output  string
+		options StylingOptions
+	}{
+		{
+			"<h1>Test</h1>",
+			"---\nTest\n---",
+			StylingOptions{},
+		},
+		{
+			"<h2>Test</h2>",
+			"---\nTest\n---",
+			StylingOptions{},
+		},
+		{
+			"<h3>Test</h3>",
+			"---\nTest\n---",
+			StylingOptions{},
+		},
+		{
+			"<h1>Test</h1>",
+			"!Test^",
+			StylingOptions{HeaderPrefix: &prefix, HeaderSuffix: &suffix},
+		},
+		{
+			"<h2>Test</h2>",
+			"!Test",
+			StylingOptions{HeaderPrefix: &prefix, HeaderSuffix: &empty},
+		},
+		{
+			"<h3>Test</h3>",
+			"Test",
+			StylingOptions{HeaderPrefix: &empty, HeaderSuffix: &empty},
+		},
+	}
+
+	for _, testCase := range testCases {
+		options := Options{
+			StylingOptions: testCase.options,
+		}
+		if msg, err := wantString(testCase.input, testCase.output, options); err != nil {
+			t.Error(err)
+		} else if len(msg) > 0 {
+			t.Log(msg)
+		}
+	}
+}
+
 type StringMatcher interface {
 	MatchString(string) bool
 	String() string

@@ -20,6 +20,13 @@ type Options struct {
 	OmitLinks           bool                 // Turns on omitting links
 	OmitBoldEmphasis    bool                 // Turns on skipping adding * around bold and strong elements.
 	OmitImgAlt          bool                 // Turns on omitting img alt text.
+	StylingOptions      StylingOptions
+}
+
+// StylingOptions to stylize the output even more
+type StylingOptions struct {
+	HeaderPrefix *string
+	HeaderSuffix *string
 }
 
 // PrettyTablesOptions overrides tablewriter behaviors
@@ -158,10 +165,17 @@ func (ctx *textifyTraverseContext) handleElement(node *html.Node) error {
 			return err
 		}
 
-		str := subCtx.buf.String()
-		divider := "---"
+		str := strings.Trim(subCtx.buf.String(), " \t\r\n")
+		prefix := "\n---\n"
+		suffix := prefix
+		if ctx.options.StylingOptions.HeaderPrefix != nil {
+			prefix = *ctx.options.StylingOptions.HeaderPrefix
+		}
+		if ctx.options.StylingOptions.HeaderSuffix != nil {
+			suffix = *ctx.options.StylingOptions.HeaderSuffix
+		}
 
-		return ctx.emit("\n\n" + divider + "\n" + str + "\n" + divider + "\n\n")
+		return ctx.emit("\n" + prefix + str + suffix + "\n")
 
 	case atom.Blockquote:
 		ctx.blockquoteLevel++
